@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Water intake widget to log daily water consumption in ounces and display weekly consumption totals, with a $0.50 paywall/payment requirement to use the app.",
+  "architectural_notes": [
+    "Introduce a paywall/payment flow requiring a one-time $0.50 payment before app use."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-frontend-water-intake-widget-ui-that-lets-the-user-record-today-s-water-intake-in-ounces-and-view-edit-their-daily-totals-for-the-last-7-days",
+      "title": "Create a frontend water intake widget UI that lets the user record today’s water intake in ounces and view/edit their daily totals for the last 7 days.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-weekly-consumption-view-that-shows-how-much-water-the-user-consumed-weekly-using-the-stored-daily-ounce-totals",
+      "title": "Add a weekly consumption view that shows how much water the user consumed weekly, using the stored daily ounce totals.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-establish-a-coherent-distinctive-visual-theme-for-the-app-and-apply-it-consistently-across-the-water-intake-widget-and-weekly-summary-screens",
+      "title": "Establish a coherent, distinctive visual theme for the app and apply it consistently across the water intake widget and weekly summary screens.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-payment-flow-to-unlock-access-for-0-50-and-persist-the-unlocked-state-for-the-logged-in-user",
+      "title": "Implement the payment flow to unlock access for $0.50 and persist the unlocked state for the logged-in user.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-frontend-paywall-experience-that-blocks-the-hydration-tracker-ui-until-the-user-has-paid-0-50-and-provides-clear-english-user-facing-messaging-for-login-payment-and-unlock-status",
+      "title": "Add a frontend paywall experience that blocks the hydration tracker UI until the user has paid $0.50, and provides clear English user-facing messaging for login, payment, and unlock status.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Record/log daily water intake amounts in ounces.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Show weekly water consumption summary (e.g., totals by week).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Implement backend storage and APIs to record a user’s daily water intake amount in ounces and to retrieve weekly consumption summaries.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add paid access: require users to pay $0.50 to use the app (paywall + payment processing).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add backend support for paid access by tracking whether each caller (Principal) has unlocked the app and exposing an API to query the caller’s paid/unlocked status.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Enforce paid access on the backend by preventing unpaid users from recording water intake or fetching weekly summaries.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Water intake widget: log daily ounces and show weekly consumption",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

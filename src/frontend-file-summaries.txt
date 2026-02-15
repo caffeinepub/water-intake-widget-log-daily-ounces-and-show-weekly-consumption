@@ -1,0 +1,16 @@
+{
+  "frontend/src/App.tsx": "Main application component with pathname-based routing for payment success/failure views, paywall gating based on paid access state, and callback handling for payment-required errors from child components, with all React hooks called before conditional returns.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for fetching weekly water intake summary and recording new intake amounts with automatic cache invalidation and retry disabled for proper error handling.",
+  "frontend/src/features/water/components/WaterIntakeWidget.tsx": "Daily water intake logging interface with payment-required error handling that triggers paywall display via callback prop.",
+  "frontend/src/features/water/components/WeeklySummaryView.tsx": "Weekly summary view with payment-required error handling that triggers paywall display via callback prop when data fetching fails.",
+  "frontend/src/index.css": "Global styles with teal/cyan water-inspired OKLCH color system for both light and dark modes, avoiding blue/purple themes.",
+  "frontend/tailwind.config.js": "Tailwind configuration extending the theme with custom border radius and maintaining OKLCH color token system.",
+  "frontend/src/hooks/usePaidAccess.ts": "React Query hook that checks if the authenticated user has paid access to the app, with proper loading states and actor dependency handling.",
+  "frontend/src/features/payments/hooks/useCreateCheckoutSession.ts": "React Query mutation hook that creates a Stripe checkout session for $0.50 payment with JSON parsing and URL validation.",
+  "frontend/src/features/payments/hooks/useConfirmPurchase.ts": "React Query mutation hook that confirms a Stripe payment session and invalidates the paid access cache on success.",
+  "frontend/src/components/auth/LoginButton.tsx": "Reusable login/logout button component using Internet Identity with query cache clearing on logout.",
+  "frontend/src/features/paywall/PaywallScreen.tsx": "Paywall screen that requires authentication and initiates $0.50 Stripe checkout, displaying app features and pricing with clear English messaging.",
+  "frontend/src/features/payments/components/PaymentSuccessView.tsx": "Payment success view that confirms the purchase with the backend, shows success/error status, and provides navigation back to the app.",
+  "frontend/src/features/payments/components/PaymentFailureView.tsx": "Payment failure view that displays cancellation message and provides retry/return options.",
+  "frontend/src/utils/paymentErrors.ts": "Utility functions to detect payment-required errors from backend responses and map them to user-friendly messages."
+}

@@ -1,0 +1,91 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Frontend paywall + Stripe checkout flow for $0.50 unlock",
+  "requirements": [
+    {
+      "id": "REQ-7",
+      "summary": "Implement authenticated $0.50 Stripe payment flow and reflect unlocked state in the UI after success/failure.",
+      "acceptanceCriteria": [
+        "The app offers a payment flow for a fixed price of $0.50 to unlock usage.",
+        "After a successful payment, the backend marks the user as paid/unlocked and subsequent app loads reflect the unlocked state.",
+        "If payment is not completed or fails, the user remains locked and cannot use hydration tracking features.",
+        "The flow requires the user to be authenticated (Internet Identity) so the unlock can be tied to their Principal."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/usePaidAccess.ts",
+          "operation": "create",
+          "description": "Add a React Query hook that calls the backend capability hasPaidAccess() and exposes loading/unlocked state for gating the app. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/payments/hooks/useCreateCheckoutSession.ts",
+          "operation": "create",
+          "description": "Create a Stripe checkout hook using the selected stripe component pattern (React Query mutation calling createCheckoutSession, JSON parsing for {id,url}, and redirect-safe validation). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/paywall/PaywallScreen.tsx",
+          "operation": "create",
+          "description": "Create a paywall screen/overlay that requires Internet Identity login before enabling payment, starts the $0.50 checkout via the Stripe hook, and shows clear English status/error text. Use shadcn-ui components (e.g., Card, Button, Alert) for consistent UI. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/auth/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a small login/logout button component that uses useInternetIdentity and clears React Query cache on logout, for reuse in the paywall UI. Use shadcn-ui Button for styling. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/payments/components/PaymentSuccessView.tsx",
+          "operation": "create",
+          "description": "Implement a payment success view that reads the Stripe session identifier from the URL, calls the backend capability confirmPurchase(sessionId), shows a clear success/error message, and provides a way to return to the main app. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/payments/components/PaymentFailureView.tsx",
+          "operation": "create",
+          "description": "Implement a payment failure view that shows a clear English failure/cancel message and provides a way to retry payment and/or return to the app. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the payment flow into the app: (1) detect and render PaymentSuccessView for /payment-success and PaymentFailureView for /payment-failure (simple pathname-based routing), (2) gate the hydration tracker UI behind the paid-access state (usePaidAccess), and (3) show PaywallScreen when locked. Use shadcn-ui layout components already in use. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "summary": "Add a paywall experience that blocks Daily Log/Weekly Summary until unlocked, with clear English messaging and graceful handling of payment-required errors.",
+      "acceptanceCriteria": [
+        "When the user is not unlocked, the main app functionality (Daily Log and Weekly Summary) is not usable and a paywall screen/overlay is shown instead.",
+        "The paywall UI includes: (1) a prompt to sign in with Internet Identity if not signed in, (2) a button to start the $0.50 payment, and (3) clear status/error text in English.",
+        "After the backend reports the user is unlocked, the paywall is dismissed and the existing tracker UI works normally.",
+        "If the backend returns a payment-required error for hydration calls, the frontend handles it gracefully by showing the paywall (not a raw crash)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/paymentErrors.ts",
+          "operation": "create",
+          "description": "Add a small utility to detect 'payment required' errors from backend call failures (string matching / known patterns) and map them to user-friendly English messages. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Enhance water-related React Query hooks to surface errors consistently (including payment-required failures) so UI can react without crashing, and ensure data fetching is disabled or revalidated appropriately when locked/unlocked state changes. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/water/components/WaterIntakeWidget.tsx",
+          "operation": "modify",
+          "description": "Handle payment-required errors from recordIntake gracefully: when detected, stop showing raw errors and instead trigger the app-level paywall display (via a callback prop or shared state) while keeping other validation errors as-is. Continue using shadcn-ui components already present. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/features/water/components/WeeklySummaryView.tsx",
+          "operation": "modify",
+          "description": "Handle payment-required errors from weekly summary fetching gracefully: when detected, avoid rendering broken/empty summary as a 'normal' state and instead trigger the app-level paywall display (via a callback prop or shared state). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Ensure the paywall blocks interaction with Daily Log and Weekly Summary when locked, shows clear English status messages, and can be activated both by (a) initial locked status from hasPaidAccess and (b) payment-required errors coming back from hydration calls. Verify the component's usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-the-payment-flow-to-unlock-access-for-0-50-and-persist-the-unlocked-state-for-the-logged-in-user",
+      "featureTitle": "Implement the payment flow to unlock access for $0.50 and persist the unlocked state for the logged-in user.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/auth/LoginButton.tsx",
+        "frontend/src/features/payments/components/PaymentFailureView.tsx",
+        "frontend/src/features/payments/components/PaymentSuccessView.tsx",
+        "frontend/src/features/payments/hooks/useCreateCheckoutSession.ts",
+        "frontend/src/features/paywall/PaywallScreen.tsx",
+        "frontend/src/hooks/usePaidAccess.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "stripe@3.0.0",
+        "http-outcalls@3.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-frontend-paywall-experience-that-blocks-the-hydration-tracker-ui-until-the-user-has-paid-0-50-and-provides-clear-english-user-facing-messaging-for-login-payment-and-unlock-status",
+      "featureTitle": "Add a frontend paywall experience that blocks the hydration tracker UI until the user has paid $0.50, and provides clear English user-facing messaging for login, payment, and unlock status.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/features/water/components/WaterIntakeWidget.tsx",
+        "frontend/src/features/water/components/WeeklySummaryView.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/utils/paymentErrors.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "stripe@3.0.0",
+        "http-outcalls@3.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-8"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "kind": "build_request",
+  "title": "Add $0.50 paid access requirement (paywall) to use the app",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-5",
+      "text": "Add backend support for paid access by tracking whether each caller (Principal) has unlocked the app and exposing an API to query the caller’s paid/unlocked status.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-user-1"
+        ],
+        "quotes": [
+          "Users need to pay $0.50 to use app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend stores a per-user (Principal) boolean or equivalent flag representing whether the user has paid/unlocked access.",
+        "Backend exposes a query method that returns the caller’s current access status (paid/unlocked vs locked).",
+        "Access status is scoped per caller and does not leak other users’ status."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "Enforce paid access on the backend by preventing unpaid users from recording water intake or fetching weekly summaries.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-user-1"
+        ],
+        "quotes": [
+          "Users need to pay $0.50 to use app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If an unpaid/locked caller invokes recordIntake, the call fails with a clear error (or returns a clear rejected result) indicating payment is required.",
+        "If an unpaid/locked caller invokes getWeeklySummary, the call fails with a clear error (or returns a clear rejected result) indicating payment is required.",
+        "Paid/unlocked callers can use recordIntake and getWeeklySummary with the same behavior as before."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement the payment flow to unlock access for $0.50 and persist the unlocked state for the logged-in user.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-user-1"
+        ],
+        "quotes": [
+          "Users need to pay $0.50 to use app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The app offers a payment flow for a fixed price of $0.50 to unlock usage.",
+        "After a successful payment, the backend marks the user as paid/unlocked and subsequent app loads reflect the unlocked state.",
+        "If payment is not completed or fails, the user remains locked and cannot use hydration tracking features.",
+        "The flow requires the user to be authenticated (Internet Identity) so the unlock can be tied to their Principal."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Add a frontend paywall experience that blocks the hydration tracker UI until the user has paid $0.50, and provides clear English user-facing messaging for login, payment, and unlock status.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-1"
+        ],
+        "quotes": [
+          "Users need to pay $0.50 to use app"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When the user is not unlocked, the main app functionality (Daily Log and Weekly Summary) is not usable and a paywall screen/overlay is shown instead.",
+        "The paywall UI includes: (1) a prompt to sign in with Internet Identity if not signed in, (2) a button to start the $0.50 payment, and (3) clear status/error text in English.",
+        "After the backend reports the user is unlocked, the paywall is dismissed and the existing tracker UI works normally.",
+        "If the backend returns a payment-required error for hydration calls, the frontend handles it gracefully by showing the paywall (not a raw crash)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor with all logic in backend/main.mo; add backend/migration.mo only if required for state upgrades.",
+    "Do not edit frontend immutable paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui.",
+    "Use English for any user-facing UI text."
+  ],
+  "nonGoals": [
+    "Subscriptions, recurring billing, coupons, multiple pricing tiers, or promo codes.",
+    "Third-party authentication providers other than Internet Identity.",
+    "Real-time features (WebSockets), email/SMS receipts/notifications, or external databases."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
